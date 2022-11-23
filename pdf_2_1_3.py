@@ -238,5 +238,5 @@ class InputConnect:
         report.generate_pdf()
 
 
-if __name__ == '__main__':
+def get_pdf():
     InputConnect()
