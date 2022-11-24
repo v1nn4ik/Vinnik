@@ -9,7 +9,7 @@ def main():
     elif type_out == 'Статистика':
         pdf_2_1_3.get_pdf()
     else:
-        print('Неверный ввод!')
+        print('Неверный ввод! (main)')
 
 
 if __name__ == '__main__':
