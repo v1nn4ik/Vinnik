@@ -10,7 +10,24 @@ import numpy as np
 
 
 class Vacancy:
+    """
+    Класс для вакансии и ее характеристик.
+    Attributes:
+        name (str): Название вакансии
+        salary_from (int): Нижняя граница вилки оклада
+        salary_to (int): Верхняя граница вилки оклада
+        salary_currency (str): Валюта оклада
+        salary_average (float): Средняя зарплата
+        area_name (str): Месторасположение вакансии
+        year (int): Год публикации
+        currency_to_rub (dict): Словарь с курсом валют
+    """
     def __init__(self, vacancy):
+        """
+        Инициализирует объект Vacancy.
+        Args:
+            vacancy (dict): словарь с характеристиками вакансии
+        """
         self.name = vacancy['name']
         self.salary_from = int(float(vacancy['salary_from']))
         self.salary_to = int(float(vacancy['salary_to']))
@@ -26,11 +43,28 @@ class Vacancy:
 
 
 class DataSet:
+    """
+    Считывает и обрабатывает данные из csv файла.
+    Attributes:
+        file_name (str): Название файла
+        vacancy_name (str): Название вакансии
+    """
     def __init__(self, file_name, vacancy_name):
+        """
+        Инициализирует объект DataSet.
+        Args:
+            file_name (str): Название файла
+            vacancy_name (str): Название вакансии
+        """
         self.file_name = file_name
         self.vacancy_name = vacancy_name
 
     def csv_reader(self):
+        """
+        Считывает csv файл и записывает данные в словарь.
+        Returns:
+            dict: Данные из csv файла
+        """
         file = csv.reader(open(self.file_name, encoding='utf_8_sig'))
         title = next(file)
         title_length = len(title)
@@ -40,6 +74,13 @@ class DataSet:
 
     @staticmethod
     def average_for_salary(dict):
+        """
+        Находит среднюю зарплату в словаре.
+        Args:
+            dict (dict): словарь со средними зарплатами
+        Returns:
+             dict: словарь со средними зарплатами
+        """
         answer = {}
         for key, values in dict.items():
             answer[key] = int(sum(values) / len(values))
@@ -47,12 +88,24 @@ class DataSet:
 
     @staticmethod
     def augmentation(vacancy, amount, dict):
+        """
+        Добавляет данные к словарю
+        Args:
+            vacancy (int): год вакансии
+            amount (list): средняя зарплата
+            dict (dict): словарь с зарплатами
+        """
         if vacancy in dict:
             dict[vacancy] += amount
         else:
             dict[vacancy] = amount
 
     def get_statistic(self):
+        """
+        Формирует данные для статтистики.
+        Returns:
+            tuple: Солержит в себе словари с данными статистик
+        """
         salary, salary_of_vacancy_name, salary_city, vacancies_count = {}, {}, {}, 0
 
         for vacancy_dict in self.csv_reader():
@@ -89,6 +142,9 @@ class DataSet:
 
     @staticmethod
     def print_statistic(value1, value2, value3, value4, value5, value6):
+        """
+        Выводит данные в консоль.
+        """
         print('Динамика уровня зарплат по годам: {0}'.format(value1))
         print('Динамика количества вакансий по годам: {0}'.format(value2))
         print('Динамика уровня зарплат по годам для выбранной профессии: {0}'.format(value3))
@@ -98,7 +154,30 @@ class DataSet:
 
 
 class Report:
+    """
+    Выводит данные в excel, png, pdf , pdfkit.
+    Attributes:
+        workbook (Workbook): Инициализатор книги Excel
+        vacancy_name (str): Название вакансии
+        value1 (dict): Зарплаты по годам
+        value2 (dict): Количество вакансий по годам
+        value3 (dict): Зарплаты по годам для выбранной профессии
+        value4 (dict): Количество вакансий по годам для выбранной профессии
+        value5 (dict): Зарплаты по городам
+        value6 (dict): Доли вакансий по городам
+    """
     def __init__(self, vacancy_name, value1, value2, value3, value4, value5, value6):
+        """
+        Иницализация класса для вывода данных.
+        Args:
+            vacancy_name (str): Название вакансии
+            value1 (dict): Зарплаты по годам
+            value2 (dict): Количество вакансий по годам
+            value3 (dict): Зарплаты по годам для выбранной профессии
+            value4 (dict): Количество вакансий по годам для выбранной профессии
+            value5 (dict): Зарплаты по городам
+            value6 (dict): Доли вакансий по городам
+        """
         self.workbook = Workbook()
         self.vacancy_name = vacancy_name
         self.value1 = value1
@@ -109,6 +188,11 @@ class Report:
         self.value6 = value6
 
     def generate_excel(self):
+        """
+        Генерирует таблички в excel файле на двух страницах используя библиотеку openpyxl.
+        Creates:
+            Workbook: Файл report.xlsx с двумя страницами и таблицами в них
+        """
         page1 = self.workbook.active
         page1.title = 'Статистика по годам'
         page1.append(['Год', 'Средняя зарплата', 'Средняя зарплата - ' + self.vacancy_name,
@@ -170,6 +254,11 @@ class Report:
         self.workbook.save(filename='report.xlsx')
 
     def generate_image(self):
+        """
+        Генерирует изображение с 4 графиками используя библиотеки matplotlib, numpy.
+        Creates:
+            png: Файл graph.png с 4 графиками
+        """
         fig, ((graphic1, graphic2), (graphic3, graphic4)) = plt.subplots(nrows=2, ncols=2)
 
         graphic1.set_title('Уровень зарплат по годам', fontdict={'fontsize': 8})
@@ -208,6 +297,11 @@ class Report:
         plt.savefig('graph.png')
 
     def generate_pdf(self):
+        """
+        Генерирует pdf файл с 4 графиками и 2 таблицами, при помощи библиотек pdfkit, jinja2, pathlib и шаблона в формате html.
+        Creates:
+            pdf: Файл report.pdf с 4 графиками и 2 таблицами
+        """
         environment = Environment(loader=FileSystemLoader('.'))
         template = environment.get_template("pdf_template.html")
         values = []
@@ -224,7 +318,16 @@ class Report:
 
 
 class InputConnect:
+    """
+    Обрабатывает данные введенные пользователем.
+    Attributes:
+        file_name (str): Название файла
+        vacancy_name (str): Название вакансии
+    """
     def __init__(self):
+        """
+        Инициализирует класс, выводит статистику в консоль, а так же запускает создание xlsx, png, pdf файлов.
+        """
         self.file_name = input('Введите название файла: ')
         self.vacancy_name = input('Введите название профессии: ')
 
@@ -239,4 +342,7 @@ class InputConnect:
 
 
 def get_pdf():
+    """
+    Запускает программу.
+    """
     InputConnect()

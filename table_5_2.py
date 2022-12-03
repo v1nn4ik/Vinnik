@@ -48,7 +48,26 @@ dic_rus_names = {
 
 
 class Salary:
+    """
+    currency_to_rub (dict): Словарь с курсом валют
+    dic_currency_to_ru (dict): Словарь с переводом названий валют на русский язык
+    dic_experience (dict): Словарь с переводом опыта работы на русский язык
+    dic_rus_names (dict): Словарь с переводом характеристик на русский язык
+
+    Класс для представления зарплаты.
+    Attributes:
+        salary_from (int): Нижняя граница вилки оклада
+        salary_to (int): Верхняя граница вилки оклада
+        salary_gross (str): С или без вычета налогов
+        salary_currency (str): Валюта оклада
+        salary_average (float): Средняя зарплата
+    """
     def __init__(self, vacancy):
+        """
+        Инициализирует объект Salary.
+        Args:
+            vacancy (dict): словарь с характеристиками вакансии
+        """
         self.salary_from = int(float(vacancy['salary_from']))
         self.salary_to = int(float(vacancy['salary_to']))
         self.salary_gross = 'Без вычета налогов' if vacancy['salary_gross'].lower() == 'true' else 'С вычетом налогов'
@@ -56,12 +75,37 @@ class Salary:
         self.salary_average = currency_to_rub[self.salary_currency] * (self.salary_from + self.salary_to) / 2
 
     def __str__(self):
+        """
+        Форматирует данные о зарплате.
+        Returns:
+            str: данные о зарплате в виде одной строки
+        """
         return '{0:,} - {1:,} ({2}) ({3})'.format(self.salary_from, self.salary_to,
                                                   dic_currency_to_ru[self.salary_currency],
                                                   self.salary_gross).replace(',', ' ')
 
 
 class Vacancy:
+    """
+    Класс для вакансии и ее характеристик.
+    Attributes:
+        order (list): Лист с названиями характеристик для вакансии
+        dic_experience_weight_dictionary (dict): Словарь для обозначения опыта работы по цифрам
+        index (int): Номер вакансии
+        name (str): Название вакансии
+        description (str): Описание вакансии
+        skills (str): Требуемые навыки для вакансии
+        key_skills (str): Требуемые навыки для вакансии сокращенные до 100 символов
+        skills_length (int): Количество символов в полной характеристике навыков
+        experience_id (str): Опыт работы
+        premium (str): Вакансия премиум или нет
+        employer_name (str): Название компании
+        salary_class (Salary): Данные о зарплате
+        salary (str): Данные о зарплате в строчном формате
+        area_name (str): Месторасположение вакансии
+        published (str): Место публикации
+        published_at (str): Время публикации
+    """
     order = ['index', 'name', 'description', 'key_skills', 'experience_id', 'premium', 'employer_name', 'salary',
              'area_name', 'published_at']
     dic_experience_weight_dictionary = {
@@ -72,6 +116,11 @@ class Vacancy:
     }
 
     def __init__(self, vacancy):
+        """
+        Инициализирует объект Vacancy.
+        Args:
+            vacancy (dict): словарь с характеристиками вакансии
+        """
         self.index = 0
         self.name = self.clear_html(vacancy['name'])
         self.description = self.shortener(self.clear_html(vacancy['description']))
@@ -89,39 +138,90 @@ class Vacancy:
 
     @staticmethod
     def clear_html(string):
+        """
+        Удаляет html теги и лишние пробелы из строки.
+        Returns:
+             str: Строку без html тегов и лишних пробелов
+        """
         result = re.sub(r'<.*?>', '', string)
         result = re.sub(r'\s+', ' ', result)
         return result.strip()
 
     @staticmethod
     def shortener(string):
+        """
+        Сокращает длину строки до 100 символов и добавляет "..." в конец.
+        Returns:
+             str: Строку длинною 103 символа с "..." на конце
+        """
         return string if len(string) <= 100 else string[:100] + '...'
 
     @property
     def salary_to(self):
+        """
+        Берет верхнюю границу зарплаты из класса зарплат.
+        Returns:
+            int: Верхнюю границу зарплаты
+        """
         return self.salary_class.salary_to
 
     @property
     def salary_average(self):
+        """
+        Берет среднюю зарплаты из класса зарплат.
+        Returns:
+            int: Среднюю зарплату
+        """
         return self.salary_class.salary_average
 
     @property
     def salary_currency(self):
+        """
+        Берет валюту зарплаты из класса зарплат.
+        Returns:
+            str: Курс валюты зарплаты
+        """
         return self.salary_class.salary_currency
 
     @property
     def experience_weight(self):
+        """
+        Задает "вес" для опыта работы, чем больше опыт, тем больше цифра.
+        Returns:
+            int: Вес опыта работы
+        """
         return self.dic_experience_weight_dictionary[self.experience_id]
 
     @property
     def salary_from(self):
+        """
+        Берет нижнюю границу зарплаты из класса зарплат.
+        Returns:
+            int: Нижнюю границу зарплаты
+        """
         return self.salary_class.salary_from
 
     def get_list(self):
+        """
+        Превращает данные в лист.
+        Returns:
+            list: Данные о вакансии
+        """
         return [getattr(self, key) for key in self.order]
 
 
 class DataSet:
+    """
+    Считывает и обрабатывает данные из csv файла.
+    Attributes:
+        file_name (str): Название файла
+        filter_param (str): Параметр фильтрации
+        sort_param (str): Параметр сортировки
+        sort_reverse (str): Порядок сортировки
+        sort_range (str): Диапазон вывода
+        vacancies_objects (list): Лист с вакансиями
+        cond_to_sort (dict): Словарь с характеристиками для вакансии для сортировки
+    """
     def __init__(self, file_name, filter_param, sort_param, sort_reverse, sort_range):
         self.file_name = file_name
         self.filter_param = filter_param
@@ -143,6 +243,11 @@ class DataSet:
     }
 
     def csv_reader(self):
+        """
+        Считывает csv файл и записывает данные в лист.
+        Returns:
+            list: Данные из csv файла в виде словарей хранящихся в листе
+        """
         header = []
         with open(self.file_name, mode='r', encoding='utf-8-sig') as file:
             reader = csv.reader(file)
@@ -160,9 +265,19 @@ class DataSet:
             exit()
 
     def get_rows(self):
+        """
+        Объединяет все данные о вакансиях в list.
+        Returns:
+            list: Данные вакансий
+        """
         return [vacancy.get_list() for vacancy in self.vacancies_objects]
 
     def get_range(self):
+        """
+        Сокращает все данные о вакансиях до заданного диапазона
+        Returns:
+            list: Данные вакансий
+        """
         vacancies_temp = []
         length = len(self.sort_range)
         for index, vacancy in enumerate(self.vacancies_objects):
@@ -173,6 +288,9 @@ class DataSet:
         self.vacancies_objects = vacancies_temp
 
     def sort_rows(self):
+        """
+        Сортирует вакансии по в нужном порядке сортировки.
+        """
         if self.sort_param != '':
             self.vacancies_objects.sort(key=lambda a: getattr(a, dic_rus_names[self.sort_param]),
                                         reverse=self.sort_reverse)
@@ -180,6 +298,9 @@ class DataSet:
             self.vacancies_objects.reverse()
 
     def filter_rows(self):
+        """
+        Фильтрует вакансии по заданным параметрам.
+        """
         if len(self.filter_param) == 0:
             return
         self.vacancies_objects = list(
@@ -188,7 +309,21 @@ class DataSet:
 
 
 class InputConnect:
+    """
+    Обрабатывает данные введенные пользователем.
+    Attributes:
+        errors (list): Лист с названиями характеристик для вакансии
+        file_name (str): Название файла
+        filter_param (str): Параметр фильтрации
+        sort_param (str): Параметр сортировки
+        sort_reverse (str): Порядок сортировки
+        sort_range (str): Диапазон вывода
+        table_fields (str): Столбцы которые нужно вывести в консоль
+    """
     def __init__(self):
+        """
+        Инициализирует класс, выводит таблицу в консоль.
+        """
         self.errors = []
         self.file_name = input('Введите название файла: ')
         self.filter_param = self.parse_filter_param(input('Введите параметр фильтрации: '))
@@ -216,6 +351,11 @@ class InputConnect:
                     'Название региона', 'Дата публикации вакансии']
 
     def parse_filter_param(self, filter_param):
+        """
+        Обрабатывает ввод пользователя для параметра фильтрации и выводит ошибку, если данные введены неверно.
+        Returns:
+            list: Параметры фильтрации
+        """
         if filter_param == '':
             return []
         if ': ' not in filter_param:
@@ -228,24 +368,49 @@ class InputConnect:
         return filter_param
 
     def parse_sort_reverse(self, sort_reverse):
+        """
+        Обрабатывает ввод пользователя для порядка сортировки и выводит ошибку, если данные введены неверно.
+        Returns:
+            bool: Вид порядка сортировки
+        """
         if sort_reverse not in ('', 'Да', 'Нет'):
             self.errors.append('Порядок сортировки задан некорректно')
         return True if sort_reverse == 'Да' else False
 
     def parse_sort_param(self, sort_param):
+        """
+        Обрабатывает ввод пользователя для параметра сортировки и выводит ошибку, если данные введены неверно.
+        Returns:
+            list: Параметры сортировки
+        """
         if sort_param not in InputConnect.table_header + ['']:
             self.errors.append('Параметр сортировки некорректен')
         return sort_param
 
     @staticmethod
     def parse_table_fields(table_fields):
+        """
+        Обрабатывает ввод пользователя для требуемых столбцов и выводит ошибку, если данные введены неверно.
+        Returns:
+            list: Заголовки столбцов
+        """
         return InputConnect.table_header if table_fields == '' else ['№'] + [a for a in table_fields.split(', ') if
                                                                              a in InputConnect.table_header]
 
     @staticmethod
     def parse_sort_range(sort_range):
+        """
+        Обрабатывает ввод пользователя для диапазона сортировки и выводит ошибку, если данные введены неверно.
+        Returns:
+            list: Диапазон сортировки
+        """
         return [] if sort_range == '' else [int(limit) - 1 for limit in sort_range.split()]
 
 
 def get_table():
+    """
+    Запускает программу.
+    """
     InputConnect()
+
+get_table()
