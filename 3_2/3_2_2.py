@@ -96,5 +96,3 @@ if __name__ == '__main__':
 
     pr.disable()
     pr.print_stats(sort="calls")
-
-    print("6361223 function calls (6360415 primitive calls) in 20.347 seconds")
