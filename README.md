@@ -1,3 +1,4 @@
 3.2.1 Разделить данные
 
-![image](https://user-images.githubusercontent.com/60822244/206730024-61d67a1b-c0c1-4275-a2ba-f608a36d6eb5.png)![img.png](img.png)
+![image](https://user-images.githubusercontent.com/60822244/206732408-60a4127a-85fa-415b-883f-1892687604e1.png)
+
