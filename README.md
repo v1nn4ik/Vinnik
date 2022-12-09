@@ -6,8 +6,8 @@
 ## 3.2.2 Многопроцессорная обработка
 - без многопроцессорной обработки
 
-![pycharm64_chhk83mDai](https://user-images.githubusercontent.com/60822244/206765683-8c0b8456-12b9-416f-a2be-c16f8e5b1a82.png)
+![pycharm64_R4bTHKJFXH](https://user-images.githubusercontent.com/60822244/206770183-081d84d7-72c1-4c73-8ac4-0a0c2fac4527.png)
 - с многопроцессорной обработкой
 
-![image](https://user-images.githubusercontent.com/60822244/206765697-10016d19-3c7a-44c6-a5e7-6f150b48ea7e.png)
+![pycharm64_R4bTETQvXH](https://user-images.githubusercontent.com/60822244/206770144-4b69344e-dad4-4d0e-a858-3a2f9bc71b02.png)
 
