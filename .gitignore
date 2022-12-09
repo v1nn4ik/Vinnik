@@ -1,4 +1,4 @@
 /.idea
 /venv
-/vacancies_by_year.csv
-/vacancies_medium.csv
+/csv/vacancies_by_year.csv
+/csv/vacancies_medium.csv

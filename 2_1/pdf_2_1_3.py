@@ -302,7 +302,7 @@ class Report:
         Creates:
             pdf: Файл report.pdf с 4 графиками и 2 таблицами
         """
-        environment = Environment(loader=FileSystemLoader('.'))
+        environment = Environment(loader=FileSystemLoader('..'))
         template = environment.get_template("pdf_template.html")
         values = []
         for key in self.value6:
