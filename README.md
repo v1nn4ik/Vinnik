@@ -11,3 +11,7 @@
 
 ![pycharm64_R4bTETQvXH](https://user-images.githubusercontent.com/60822244/206770144-4b69344e-dad4-4d0e-a858-3a2f9bc71b02.png)
 
+## 3.2.3 Concurrent futures
+- Оставляю решение с Concurrent futures, т.к. оно быстрее
+
+![pycharm64_0jsEEVsEfy](https://user-images.githubusercontent.com/60822244/206780664-a45169c9-b910-4c84-9750-ef74d541bece.png)
