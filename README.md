@@ -15,3 +15,8 @@
 - Оставляю решение с Concurrent futures, т.к. оно быстрее
 
 ![pycharm64_0jsEEVsEfy](https://user-images.githubusercontent.com/60822244/206780664-a45169c9-b910-4c84-9750-ef74d541bece.png)
+
+## 3.3.1 Курсы валют
+- Частотность
+
+![image](https://user-images.githubusercontent.com/60822244/208971211-3e690cd0-0dc2-4f95-9c59-accbb62ebbd9.png)
