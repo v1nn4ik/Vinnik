@@ -7,7 +7,7 @@ import numpy as np
 from jinja2 import Environment, FileSystemLoader
 import pdfkit
 
-date_df = pd.read_csv('C:\\Users\\vinni\\PycharmProjects\\Vinnik\\3_4\\curr.csv')
+date_df = pd.read_csv('C:\\Users\vinni\\PycharmProjects\\Vinnik\\3_4\\3_4_2\\curr.csv')
 
 
 class Multithreading:
@@ -64,7 +64,7 @@ class Report:
 
     @staticmethod
     def generate_pdf(vac_name, dicts_by_year):
-        env = Environment(loader=FileSystemLoader('.'))
+        env = Environment(loader=FileSystemLoader('..'))
         template = env.get_template("pdf_template.html")
 
         pdf_template = template.render(

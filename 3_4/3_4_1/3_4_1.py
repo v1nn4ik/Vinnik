@@ -3,8 +3,8 @@ from statistics import mean
 import pandas as pd
 
 pd.set_option('expand_frame_repr', False)
-date_df = pd.read_csv('C:\\Users\\vinni\\PycharmProjects\\Vinnik\\3_4\\curr.csv')
-df = pd.read_csv('C:\\Users\\vinni\\PycharmProjects\\Vinnik\\csv\\vacancies_dif_currencies.csv')
+date_df = pd.read_csv('C:\\Users\vinni\\PycharmProjects\\Vinnik\\3_4\\3_4_1\\curr.csv')
+df = pd.read_csv('/csv/vacancies_dif_currencies.csv')
 
 
 def get_salary(salary_from, salary_to, salary_currency, date):
