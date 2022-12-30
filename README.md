@@ -24,3 +24,8 @@
 [curr.csv](https://github.com/v1nn4ik/Vinnik/files/10315592/curr.csv)
 
 
+## 3.5.1 Курсы валют в БД
+- База данных
+
+![image](https://user-images.githubusercontent.com/60822244/210073872-f6e19615-230e-4dbb-8c4d-a392811a6f52.png)
+
