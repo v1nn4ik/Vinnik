@@ -21,9 +21,6 @@
 
 ![image](https://user-images.githubusercontent.com/60822244/208971211-3e690cd0-0dc2-4f95-9c59-accbb62ebbd9.png)
 
-[curr.csv](https://github.com/v1nn4ik/Vinnik/files/10315592/curr.csv)
-
-
 ## 3.5.1 Курсы валют в БД
 - База данных
 
